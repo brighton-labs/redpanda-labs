@@ -74,6 +74,11 @@ func descend(w io.Writer, kv jstream.KV, depth int, key string, delim string) {
 	case string:
 		stringValue := kv.Value.(string)
 		stringValue = strings.Replace(stringValue, "\n", " ", -1)
+		if (len(stringValue) >= 30) {
+			stringValue = strings.Replace(stringValue, "\"", "'", -1)
+			stringValue = strings.Replace(stringValue, "\\n", ";", -1)
+			stringValue = strings.Replace(stringValue, "\\", " ", -1)
+		}
 		fmt.Fprintf(w, "  \"%s\": \"%s\"", key, stringValue)
 		return
 	case []interface{}:
